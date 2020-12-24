@@ -1,0 +1,11 @@
+{
+  "name": "socketit",
+  "version": "1.0.0",
+  "description": "A stream-based WebSocket library.",
+  "main": "index.js",
+  "author": "elimerl",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^7.4.1"
+  }
+}
