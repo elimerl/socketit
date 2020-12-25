@@ -2027,13 +2027,6 @@ typedoc-default-themes@0.12.0-beta.10:
   resolved "https://registry.yarnpkg.com/typedoc-default-themes/-/typedoc-default-themes-0.12.0-beta.10.tgz#74caab1f4a9c568ff28d501ae6005ff3d8ab3e62"
   integrity sha512-RqTLRQvzuLrNEZ1VcmYoQiFkixW0QvVUv0R35jlkhxAMGtoo/giUVtWrWY1+Yp7HBnfI/wZKvhZpQYswbDL7eQ==
 
-typedoc-plugin-markdown@^3.1.1:
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/typedoc-plugin-markdown/-/typedoc-plugin-markdown-3.1.1.tgz#3796b8f8397033db535c3a19a8ff75312696620c"
-  integrity sha512-esrSaGw9NeGOR1fixubeSYCtQ9tw1iv7xa6bMvwznjs+jOUEdP0/OBe7l2bbk3PoqhNiFBozBJDo3CpcMJGHnw==
-  dependencies:
-    handlebars "^4.7.6"
-
 typedoc@^0.20.0-beta.27:
   version "0.20.0-beta.27"
   resolved "https://registry.yarnpkg.com/typedoc/-/typedoc-0.20.0-beta.27.tgz#9e1b35698c126529059b52ff085adf211c6e6870"

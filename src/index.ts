@@ -1,3 +1,4 @@
+import WebSocket, { Server } from "ws";
 import Socket from "./socket";
 
-export default Socket;
+export { Server, WebSocket, Socket };

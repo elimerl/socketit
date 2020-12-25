@@ -1,11 +1,24 @@
 import WebSocket = require("ws");
 import { EventEmitter } from "events";
 import { Duplex } from "stream";
-
+/**
+ * A socketit socket.
+ * @class
+ */
 class Socket {
   private __socket: WebSocket;
   requestHandlers: Map<string, Function>;
   streams: Map<string, Duplex>;
+  /**
+   * A socketit socket.
+   * @constructor
+   * @param socket The socket to extend.
+   * ```js
+   * const {Socket, WebSocket} = require('socketit')
+   * const ws = new WebSocket("ws://someurl.com")
+   * const socket = new Socket(ws)
+   * ```
+   */
   constructor(socket: WebSocket) {
     this.__socket = socket;
 
@@ -27,7 +40,10 @@ class Socket {
           msg.split("-").shift() === "res" &&
           msg.split("#").shift().split("-").pop() === resId
         ) {
-          const json = JSON.parse(msg.split("#").pop());
+          const json =
+            msg.split("#").pop() !== ""
+              ? JSON.parse(msg.split("#").pop())
+              : null;
           resolve(json);
         }
       };
@@ -47,7 +63,10 @@ class Socket {
           msg.split("-").shift() === "req" &&
           msg.split("#").shift().split("-").pop() === reqId
         ) {
-          const json = JSON.parse(msg.split("#").pop());
+          const json =
+            msg.split("#").pop() !== ""
+              ? JSON.parse(msg.split("#").pop())
+              : null;
           const res = handler(json);
           this.__socket.send(`res-${reqId}#${JSON.stringify(res)}`);
         }
@@ -57,6 +76,8 @@ class Socket {
   }
   /**
    * Get a duplex stream with an ID.
+   * Writing to this stream will emit the 'data' event on the other client.
+   * @param id The id of the stream.
    */
   stream(id: string) {
     if (this.streams.has(id)) {

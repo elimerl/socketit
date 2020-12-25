@@ -117,3 +117,4 @@ dist
 # Built JavaScript and declarations
 lib
 typings
+docs

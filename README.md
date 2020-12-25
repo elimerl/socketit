@@ -1,7 +1,7 @@
 <h1 align="center">socketit</h1>
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
-  <a href="https://github.com/elimerl/socketit/tree/master/docs/GUIDE.md" target="_blank">
+  <a href="https://elimerl.github.io/socketit/" target="_blank">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
   </a>
   <a href="https://choosealicense.com/licenses/mit/" target="_blank">
@@ -25,28 +25,31 @@ Simple server:
 
 ```js
 const socketit = require("socketit");
-const server = new socketit.Server();
-server.on("connection", (socket) => {
+const server = new socketit.Server({ port: 8000 });
+server.on("connection", (sock) => {
+  const socket = new socketit.Socket(sock);
   socket.stream("pos").on("data", (data) => {
     console.log(`x: ${data.x} y: ${data.y}`);
   });
   setTimeout(() => {
-    socket.request("position", (pos) => {
-      console.log(`x: ${pos.x} y: ${pos.y}`);
+    socket.request("position").then((pos) => {
+      console.log(`requested position x: ${pos.x} y: ${pos.y}`);
     });
   }, 3000);
 });
-server.listen(8000);
 ```
 
 Simple client:
 
 ```js
 const socketit = require("socketit");
-const socket = new socketit.Client("localhost:8000");
+
+const ws = new socketit.WebSocket("ws://localhost:8000");
 const pos = { x: 0, y: 10 };
-socket.on("connect", () => {
+ws.on("open", () => {
+  const socket = new socketit.Socket(ws);
   socket.handle("position", () => {
+    console.log("request for pos");
     return pos;
   });
   setInterval(() => {
