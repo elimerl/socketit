@@ -26,18 +26,12 @@ class Socket {
       const msg = data.toString();
       if (
         msg.split("-").shift() === "req" &&
-        this.requestHandlers.has(msg.split("#").shift().split("-").pop())
+        this.requestHandlers.has(msg.split("-")[1])
       ) {
         const json =
           msg.split("#").pop() !== "" ? JSON.parse(msg.split("#").pop()) : null;
-        const res = this.requestHandlers.get(
-          msg.split("#").shift().split("-").pop()
-        )(json);
-        this.socket.send(
-          `res-${msg.split("#").shift().split("-").pop()}#${JSON.stringify(
-            res
-          )}`
-        );
+        const res = this.requestHandlers.get(msg.split("-")[1])(json);
+        this.socket.send(`res-${msg.split("-")[1]}#${JSON.stringify(res)}`);
       }
     });
   }
