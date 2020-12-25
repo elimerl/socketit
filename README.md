@@ -68,6 +68,10 @@ More examples in `examples/`.
 yarn test
 ```
 
+## Documentation
+
+Documentation is available at [https://elimerl.github.io/socketit/](https://elimerl.github.io/socketit/)
+
 ## Author
 
 👤 **elimerl**
