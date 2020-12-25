@@ -22,8 +22,7 @@
     "test": "ava",
     "build": "tsc",
     "docs": "typedoc src --out docs --excludePrivate",
-    "watch": "tsc --watch",
-    "prepublish": "yarn test"
+    "watch": "tsc --watch"
   },
   "ava": {
     "extensions": [
