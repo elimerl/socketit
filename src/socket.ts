@@ -22,6 +22,24 @@ class Socket {
     this.socket = socket;
     this.requestHandlers = new Map();
     this.streams = new Map();
+    this.socket.on("message", (data) => {
+      const msg = data.toString();
+      if (
+        msg.split("-").shift() === "req" &&
+        this.requestHandlers.has(msg.split("#").shift().split("-").pop())
+      ) {
+        const json =
+          msg.split("#").pop() !== "" ? JSON.parse(msg.split("#").pop()) : null;
+        const res = this.requestHandlers.get(
+          msg.split("#").shift().split("-").pop()
+        )(json);
+        this.socket.send(
+          `res-${msg.split("#").shift().split("-").pop()}#${JSON.stringify(
+            res
+          )}`
+        );
+      }
+    });
   }
   /**
    * Send a request and await the results.
@@ -58,20 +76,6 @@ class Socket {
    */
   handle(reqId: string, handler: (req: unknown) => unknown): void {
     if (!this.requestHandlers.has(reqId)) {
-      this.socket.on("message", (data) => {
-        const msg = data.toString();
-        if (
-          msg.split("-").shift() === "req" &&
-          msg.split("#").shift().split("-").pop() === reqId
-        ) {
-          const json =
-            msg.split("#").pop() !== ""
-              ? JSON.parse(msg.split("#").pop())
-              : null;
-          const res = handler(json);
-          this.socket.send(`res-${reqId}#${JSON.stringify(res)}`);
-        }
-      });
       this.requestHandlers.set(reqId, handler);
     } else {
       throw new Error("Already have a request handler set for that.");
