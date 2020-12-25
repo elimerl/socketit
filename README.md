@@ -11,6 +11,9 @@
   <a href="https://choosealicense.com/licenses/mit/" target="_blank">
     <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
   </a>
+  <a href="https://github.com/elimerl/socketit/actions?query=workflow%3A%22Node.js+CI%22">
+  <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/elimerl/socketit/Node.js%20CI">
+  </a>
   <img alt="Bundle Size" src="https://img.shields.io/bundlephobia/min/socketit">
 </p>
 
