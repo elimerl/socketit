@@ -1,6 +1,10 @@
 <h1 align="center">socketit</h1>
 <p>
+ <a href="https://npm.im/socketit" target="_blank">
+
 <img alt="Version" src="https://img.shields.io/npm/v/socketit"> 
+  </a>
+
  <a href="https://elimerl.github.io/socketit/" target="_blank">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
   </a>
