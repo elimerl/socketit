@@ -20,27 +20,26 @@ class Socket {
    */
   constructor(socket: WebSocket) {
     this.socket = socket;
-
     this.requestHandlers = new Map();
     this.streams = new Map();
   }
   /**
    * Send a request and await the results.
-   * @param resId
-   * @param requestData
+   * @param reqId The ID of the request.
+   * @param requestData Optional data to be passed along with the request.
    * @returns A promise that resolves with the response.
    */
-  request(resId: string, requestData?: unknown): Promise<unknown> {
+  request(reqId: string, requestData?: unknown): Promise<unknown> {
     return new Promise((resolve) => {
       if (!requestData) {
         requestData = "";
       }
-      this.socket.send(`req-${resId}#${JSON.stringify(requestData)}`);
+      this.socket.send(`req-${reqId}#${JSON.stringify(requestData)}`);
       const listener = (data) => {
         const msg = data.toString();
         if (
           msg.split("-").shift() === "res" &&
-          msg.split("#").shift().split("-").pop() === resId
+          msg.split("#").shift().split("-").pop() === reqId
         ) {
           const json =
             msg.split("#").pop() !== ""
@@ -74,6 +73,8 @@ class Socket {
         }
       });
       this.requestHandlers.set(reqId, handler);
+    } else {
+      throw new Error("Already have a request handler set for that.");
     }
   }
   /**

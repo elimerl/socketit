@@ -28,7 +28,8 @@
     "lint": "prettier --write src && eslint src --fix",
     "build": "tsc",
     "docs": "typedoc src --out docs --excludePrivate",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "prepublish": "yarn lint"
   },
   "ava": {
     "extensions": [

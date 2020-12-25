@@ -8,6 +8,7 @@ ws.on("open", () => {
     console.log("request for pos");
     return pos;
   });
+
   setInterval(() => {
     socket.stream("pos").write(pos);
     pos.x += 10;
