@@ -1,4 +1,3 @@
-import Server from "./server";
-import Client from "./client";
+import Socket from "./socket";
 
-export { Server, Client };
+export default Socket;

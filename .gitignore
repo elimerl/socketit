@@ -114,5 +114,6 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
-# Built JavaScript
+# Built JavaScript and declarations
 lib
+typings
