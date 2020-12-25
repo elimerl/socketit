@@ -36,14 +36,11 @@ class Socket {
       }
       this.socket.send(`req-${reqId}#${JSON.stringify(requestData)}`);
       const listener = (data) => {
-        const msg = data.toString();
-        if (
-          msg.split("-").shift() === "res" &&
-          msg.split("#").shift().split("-").pop() === reqId
-        ) {
+        const msg: string = data.toString();
+        if (msg.split("-").shift() === "res" && msg.split("-")[1] === reqId) {
           const json =
-            msg.split("#").pop() !== ""
-              ? JSON.parse(msg.split("#").pop())
+            msg.substr(msg.indexOf("#") + 1) !== ""
+              ? JSON.parse(msg.substr(msg.indexOf("#") + 1))
               : null;
           resolve(json);
         }
@@ -60,10 +57,7 @@ class Socket {
     if (!this.requestHandlers.has(reqId)) {
       this.socket.on("message", (data) => {
         const msg = data.toString();
-        if (
-          msg.split("-").shift() === "req" &&
-          msg.split("#").shift().split("-").pop() === reqId
-        ) {
+        if (msg.split("-").shift() === "req" && msg.split("-")[1] === reqId) {
           const json =
             msg.split("#").pop() !== ""
               ? JSON.parse(msg.split("#").pop())
@@ -100,7 +94,7 @@ class Socket {
       const message = msg.toString();
       if (
         message.split("-").shift() === "stream" &&
-        message.split("#").shift().split("-").pop() === id
+        message.split("-")[1] === id
       ) {
         stream.push(JSON.parse(message.split("#").pop()));
       } else {
