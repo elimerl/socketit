@@ -2,19 +2,19 @@
 <p>
  <a href="https://npm.im/socketit" target="_blank">
 
-<img alt="Version" src="https://img.shields.io/npm/v/socketit"> 
+<img alt="Version" src="https://img.shields.io/npm/v/socketit?style=flat-square"> 
   </a>
 
  <a href="https://elimerl.github.io/socketit/" target="_blank">
-    <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
+    <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg?style=flat-square" />
   </a>
   <a href="https://choosealicense.com/licenses/mit/" target="_blank">
-    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
+    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square" />
   </a>
   <a href="https://github.com/elimerl/socketit/actions?query=workflow%3A%22Node.js+CI%22">
-  <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/elimerl/socketit/Node.js%20CI">
+  <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/elimerl/socketit/Node.js%20CI?style=flat-square">
   </a>
-  <img alt="Bundle Size" src="https://img.shields.io/bundlephobia/min/socketit">
+  <img alt="Bundle Size" src="https://img.shields.io/bundlephobia/min/socketit?style=flat-square">
 </p>
 
 > A stream-based WebSocket library.
@@ -68,13 +68,17 @@ ws.on("open", () => {
 });
 ```
 
-More examples in `examples/`.
+More examples in [`examples/`](https://github.com/elimerl/socketit/tree/master/examples).
 
 ## Run tests
 
 ```sh
 yarn test
 ```
+
+## Browser
+
+socketit does not currently support the browser. I am working on it, and hopefully will finish soon! In the meantime, you _can_ implement the protocol in the browser, but it
 
 ## Documentation
 
