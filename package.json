@@ -1,6 +1,6 @@
 {
   "name": "socketit",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A stream-based WebSocket library.",
   "main": "lib/index.js",
   "types": "typings/index.d.ts",
@@ -22,7 +22,8 @@
   "scripts": {
     "test": "ava",
     "build": "tsc",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "prepublish": "yarn test"
   },
   "ava": {
     "extensions": [
