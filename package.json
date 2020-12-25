@@ -29,7 +29,7 @@
     "build": "tsc",
     "docs": "typedoc src --out docs --excludePrivate",
     "watch": "tsc --watch",
-    "prepublish": "yarn lint"
+    "prepare": "yarn lint"
   },
   "ava": {
     "extensions": [
