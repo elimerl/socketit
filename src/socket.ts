@@ -73,17 +73,6 @@ class Socket {
    */
   handle(reqId: string, handler: (req: unknown) => unknown): void {
     if (!this.requestHandlers.has(reqId)) {
-      this.socket.on("message", (data) => {
-        const msg = data.toString();
-        if (msg.split("-").shift() === "req" && msg.split("-")[1] === reqId) {
-          const json =
-            msg.split("#").pop() !== ""
-              ? JSON.parse(msg.split("#").pop())
-              : null;
-          const res = handler(json);
-          this.socket.send(`res-${reqId}#${JSON.stringify(res)}`);
-        }
-      });
       this.requestHandlers.set(reqId, handler);
     } else {
       throw new Error("Already have a request handler set for that.");
