@@ -1,14 +1,13 @@
-import WebSocket = require("ws");
-import { EventEmitter } from "events";
+import WebSocket from "ws";
 import { Duplex } from "stream";
 /**
  * A socketit socket.
  * @class
  */
 class Socket {
-  private __socket: WebSocket;
-  requestHandlers: Map<string, Function>;
-  streams: Map<string, Duplex>;
+  private socket: WebSocket;
+  private requestHandlers: Map<string, (requestBody?: unknown) => unknown>;
+  private streams: Map<string, Duplex>;
   /**
    * A socketit socket.
    * @constructor
@@ -20,7 +19,7 @@ class Socket {
    * ```
    */
   constructor(socket: WebSocket) {
-    this.__socket = socket;
+    this.socket = socket;
 
     this.requestHandlers = new Map();
     this.streams = new Map();
@@ -29,11 +28,14 @@ class Socket {
    * Send a request and await the results.
    * @param resId
    * @param requestData
+   * @returns A promise that resolves with the response.
    */
-  request(resId: string, requestData?: any) {
+  request(resId: string, requestData?: unknown): Promise<unknown> {
     return new Promise((resolve) => {
-      if (!requestData) requestData = "";
-      this.__socket.send(`req-${resId}#${JSON.stringify(requestData)}`);
+      if (!requestData) {
+        requestData = "";
+      }
+      this.socket.send(`req-${resId}#${JSON.stringify(requestData)}`);
       const listener = (data) => {
         const msg = data.toString();
         if (
@@ -47,7 +49,7 @@ class Socket {
           resolve(json);
         }
       };
-      this.__socket.on("message", listener);
+      this.socket.on("message", listener);
     });
   }
   /**
@@ -55,9 +57,9 @@ class Socket {
    * @param reqId The request ID to handle.
    * @param handler The function to be called when the request is called.
    */
-  handle(reqId: string, handler: (req: any) => any) {
+  handle(reqId: string, handler: (req: unknown) => unknown): void {
     if (!this.requestHandlers.has(reqId)) {
-      this.__socket.on("message", (data) => {
+      this.socket.on("message", (data) => {
         const msg = data.toString();
         if (
           msg.split("-").shift() === "req" &&
@@ -68,7 +70,7 @@ class Socket {
               ? JSON.parse(msg.split("#").pop())
               : null;
           const res = handler(json);
-          this.__socket.send(`res-${reqId}#${JSON.stringify(res)}`);
+          this.socket.send(`res-${reqId}#${JSON.stringify(res)}`);
         }
       });
       this.requestHandlers.set(reqId, handler);
@@ -76,23 +78,24 @@ class Socket {
   }
   /**
    * Get a duplex stream with an ID.
-   * Writing to this stream will emit the 'data' event on the other client.
    * @param id The id of the stream.
+   * @returns A Duplex stream that is piped over WebSockets to the other party.
    */
-  stream(id: string) {
+  stream(id: string): Duplex {
     if (this.streams.has(id)) {
       return this.streams.get(id);
     }
-    const that = this;
     const stream = new Duplex({
-      read() {},
-      write(data, encoding, done) {
-        that.__socket.send(`stream-${id}#${JSON.stringify(data)}`);
+      read() {
+        return;
+      },
+      write: (data, encoding, done) => {
+        this.socket.send(`stream-${id}#${JSON.stringify(data)}`);
         done(null);
       },
       objectMode: true,
     });
-    this.__socket.on("message", (msg) => {
+    this.socket.on("message", (msg) => {
       const message = msg.toString();
       if (
         message.split("-").shift() === "stream" &&
