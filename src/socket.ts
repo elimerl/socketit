@@ -82,9 +82,8 @@ class Socket {
       return this.streams.get(id);
     }
     const stream = new Duplex({
-      read() {
-        return;
-      },
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      read() {},
       write: (data, encoding, done) => {
         this.socket.send(`stream-${id}#${JSON.stringify(data)}`);
         done(null);
@@ -95,7 +94,7 @@ class Socket {
       const message = msg.toString();
       if (
         message.split("-").shift() === "stream" &&
-        message.split("-")[1] === id
+        message.split("-")[1].substr(0, id.length) === id
       ) {
         stream.push(JSON.parse(message.split("#").pop()));
       } else {

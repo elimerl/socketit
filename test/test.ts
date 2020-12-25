@@ -1,7 +1,6 @@
 import test from "ava";
 import getPort = require("get-port");
-import WebSocket, { Server } from "ws";
-import { Socket } from "../";
+import { Socket, WebSocket, Server } from "../";
 test.cb("stream message to client from server", (t) => {
   getPort().then((port) => {
     const server = new Server({ port });

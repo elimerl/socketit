@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const socketit = require("../");
 
 const ws = new socketit.WebSocket("ws://localhost:8000");
@@ -8,7 +9,6 @@ ws.on("open", () => {
     console.log("request for pos");
     return pos;
   });
-
   setInterval(() => {
     socket.stream("pos").write(pos);
     pos.x += 10;
