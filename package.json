@@ -1,6 +1,6 @@
 {
   "name": "socketit",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A stream-based WebSocket library.",
   "main": "lib/index.js",
   "types": "typings/index.d.ts",
