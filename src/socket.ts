@@ -22,6 +22,24 @@ class Socket {
     this.socket = socket;
     this.requestHandlers = new Map();
     this.streams = new Map();
+    this.socket.on("message", (data) => {
+      const msg = data.toString();
+      if (
+        msg.split("-").shift() === "req" &&
+        this.requestHandlers.has(msg.split("#").shift().split("-").pop())
+      ) {
+        const json =
+          msg.split("#").pop() !== "" ? JSON.parse(msg.split("#").pop()) : null;
+        const res = this.requestHandlers.get(
+          msg.split("#").shift().split("-").pop()
+        )(json);
+        this.socket.send(
+          `res-${msg.split("#").shift().split("-").pop()}#${JSON.stringify(
+            res
+          )}`
+        );
+      }
+    });
   }
   /**
    * Send a request and await the results.
