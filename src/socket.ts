@@ -36,12 +36,18 @@ class Socket {
       const msg = data.toString();
       if (
         msg.split("-").shift() === "req" &&
-        this.requestHandlers.has(msg.substr(0, msg.indexOf('#')).split("-")[1])
+        this.requestHandlers.has(msg.substr(0, msg.indexOf("#")).split("-")[1])
       ) {
         const json =
           msg.split("#").pop() !== "" ? JSON.parse(msg.split("#").pop()) : null;
-        const res = this.requestHandlers.get(msg.substr(0, msg.indexOf('#')).split("-")[1])(json);
-        this.socket.send(`res-${msg.substr(0, msg.indexOf('#')).split("-")[1]}#${JSON.stringify(res)}`);
+        const res = this.requestHandlers.get(
+          msg.substr(0, msg.indexOf("#")).split("-")[1]
+        )(json);
+        this.socket.send(
+          `res-${
+            msg.substr(0, msg.indexOf("#")).split("-")[1]
+          }#${JSON.stringify(res)}`
+        );
       }
     });
   }
@@ -59,7 +65,10 @@ class Socket {
       this.socket.send(`req-${reqId}#${JSON.stringify(requestData)}`);
       const listener = (data) => {
         const msg: string = data.toString();
-        if (msg.split("-").shift() === "res" && msg.substr(0, msg.indexOf('#')).split("-")[1] === reqId) {
+        if (
+          msg.split("-").shift() === "res" &&
+          msg.substr(0, msg.indexOf("#")).split("-")[1] === reqId
+        ) {
           const json =
             msg.substr(msg.indexOf("#") + 1) !== ""
               ? JSON.parse(msg.substr(msg.indexOf("#") + 1))
