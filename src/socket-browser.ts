@@ -1,15 +1,12 @@
-import WebSocket from "ws";
 import { Duplex } from "stream";
-const isNode =
-  typeof process !== "undefined" &&
-  process.versions != null &&
-  process.versions.node != null;
+const isBrowser =
+  typeof window !== "undefined" && typeof window.document !== "undefined";
 
 /**
- * A socketit socket.
+ * A socketit socket, adapted for use in the browser.
  * @class
  */
-class Socket {
+class BrowserSocket {
   private socket: WebSocket;
   private requestHandlers: Map<string, (requestBody?: unknown) => unknown>;
   private streams: Map<string, Duplex>;
@@ -18,13 +15,13 @@ class Socket {
    * @constructor
    * @param socket The socket to extend.
    * ```js
-   * const {Socket, WebSocket} = require('socketit')
+   * const {Socket} = require('socketit')
    * const ws = new WebSocket("ws://someurl.com")
    * const socket = new Socket(ws)
    * ```
    */
   constructor(socket: WebSocket) {
-    if (!isNode) {
+    if (!isBrowser) {
       throw new Error(
         "BrowserSocket cannot be used outside the browser. Try Socket instead."
       );
@@ -32,8 +29,8 @@ class Socket {
     this.socket = socket;
     this.requestHandlers = new Map();
     this.streams = new Map();
-    this.socket.on("message", (data) => {
-      const msg = data.toString();
+    this.socket.addEventListener("message", (ev) => {
+      const msg = ev.data.toString();
       if (
         msg.split("-").shift() === "req" &&
         this.requestHandlers.has(msg.split("-")[1])
@@ -58,7 +55,7 @@ class Socket {
       }
       this.socket.send(`req-${reqId}#${JSON.stringify(requestData)}`);
       const listener = (data) => {
-        const msg: string = data.toString();
+        const msg: string = data.data.toString();
         if (msg.split("-").shift() === "res" && msg.split("-")[1] === reqId) {
           const json =
             msg.substr(msg.indexOf("#") + 1) !== ""
@@ -67,7 +64,7 @@ class Socket {
           resolve(json);
         }
       };
-      this.socket.on("message", listener);
+      this.socket.addEventListener("message", listener);
     });
   }
   /**
@@ -100,8 +97,8 @@ class Socket {
       },
       objectMode: true,
     });
-    this.socket.on("message", (msg) => {
-      const message = msg.toString();
+    this.socket.addEventListener("message", (msg) => {
+      const message = msg.data.toString();
       if (
         message.split("-").shift() === "stream" &&
         message.split("-")[1].substr(0, id.length) === id
@@ -115,4 +112,4 @@ class Socket {
     return stream;
   }
 }
-export default Socket;
+export default BrowserSocket;

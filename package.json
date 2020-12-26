@@ -29,7 +29,7 @@
     "build": "tsc",
     "docs": "typedoc src --out docs --excludePrivate",
     "watch": "tsc --watch",
-    "prepare": "yarn lint"
+    "prepare": "yarn test"
   },
   "ava": {
     "extensions": [
@@ -40,7 +40,8 @@
     ]
   },
   "files": [
-    "lib"
+    "lib",
+    "typings"
   ],
   "repository": {
     "type": "git",

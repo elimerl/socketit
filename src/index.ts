@@ -1,4 +1,4 @@
 import WebSocket, { Server } from "ws";
 import Socket from "./socket";
-
-export { Server, WebSocket, Socket };
+import BrowserSocket from "./socket-browser";
+export { Server, WebSocket, Socket, BrowserSocket };
