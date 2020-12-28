@@ -78,7 +78,7 @@ yarn test
 
 ## Browser
 
-socketit does not currently support the browser. I am working on it, and hopefully will finish soon! In the meantime, you _can_ implement the protocol in the browser, but it
+You can use socketit in browsers! (With a bundler). Just use the `BrowserSocket` instead of the `Socket`.
 
 ## Documentation
 
