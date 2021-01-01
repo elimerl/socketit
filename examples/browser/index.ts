@@ -1,5 +1,5 @@
 // Create WebSocket connection.
-import { BrowserSocket } from "../";
+import { BrowserSocket } from "../../";
 
 const ws = new WebSocket("ws://localhost:8000");
 
